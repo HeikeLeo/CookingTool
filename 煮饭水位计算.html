@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>数据</title>
+		<style type="text/css">
+			body{
+				text-align: center;
+			}
+			svg{
+				position: fixed;
+				bottom: 50%;
+				right: 0px;
+			}
+			#cover{
+				position: absolute;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				background-color: gray;
+				z-index: 1;
+				opacity: 0.9;
+				display: none;
+			}
+			#dialog{
+				position: absolute;
+				background-color: white;
+				width: 300px;
+				height: 100px;
+				top: 40%;
+				left: 43%;
+			}
+			#dialog p{
+				top: auto;
+			}
+		</style>
+	</head>
+	<body>
+			<label>米量：</label>
+			<select onchange="run()">
+				<option value ="0">请选择</option>
+				<optgroup label="<1">
+					<option value="23">半杯（半唛）</option>
+					<option value="37">大半杯（大半唛）</option>
+				</optgroup>
+				<optgroup label="1">
+					<option value="60">一杯（一唛）</option>
+					<option value="90">一杯小半（一唛细半）</option>
+					<option value="102">一杯半（一唛半）</option>
+					<option value="115">一杯大半（一唛大半）</option>
+				</optgroup>
+				<optgroup label="2">
+					<option value="140">两杯（两唛）</option>
+					<option value="168">两杯小半（两唛细半）</option>
+					<option value="182">两杯半（两唛半）</option>
+					<option value="195">两杯大半（两唛大半）</option>
+				</optgroup>
+				<optgroup label="3">
+					<option value="222">三杯（三唛）</option>
+				</optgroup>
+			</select>
+		<br />
+		<br />
+		<canvas id="canvas" width="520" height="380"></canvas>
+		<svg t="1779245788580" class="icon" viewBox="0 0 1026 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3425" width="200" height="200" onclick="showWarning('show')"><path d="M1004.657 801.716 602.263 91.599c-49.213-86.817-129.646-86.817-178.866 0L21.004 801.716c-49.207 86.906-8.949 157.798 89.388 157.798l804.877 0C1013.606 959.514 1053.825 888.622 1004.657 801.716zM544.635 832.216l-63.649 0 0-63.649 63.649 0L544.635 832.216zM544.635 641.27l-63.649 0L480.986 259.377l63.649 0L544.635 641.27z" p-id="3426" fill="#ff0000"></path></svg>
+		<div id="cover"onclick="showWarning('hide')">
+			<div id="dialog">
+				<p>本工具计算出的水位数据仅适用美的1.6L（升）电饭煲内胆使用<br /><small>（点击空白地方返回）</small></p>
+				
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript">
+		var sel = document.getElementsByTagName('select')[0]
+			canvas = document.getElementById('canvas')
+			c = canvas.getContext('2d')
+			cover = document.getElementById('cover')
+		
+		const img = new Image();
+		img.src = './截图20260509095603.png'; // 替换为实际图片路径
+
+		
+		function fx(color,x,y,w,h){//矩形
+			c.fillStyle=color;
+			c.fillRect(x,y,w,h);
+		}
+
+		function line(color,x,y){//线条
+			c.strokeStyle = color
+			c.lineTo(x,y);
+			c.stroke();
+		}
+
+		function runDraw(y){
+			c.clearRect(0,0, canvas.width, canvas.height);
+			c.drawImage(img, 0, 0, canvas.width, canvas.height); // 绘制并适应画布大小
+			c.beginPath()
+			fx('green',canvas.width/2-12,320,-10,-y)
+			c.moveTo(canvas.width/2-12-10,320-y)
+			line('green',canvas.width/2-12+80,320-y)
+		}
+
+		function run(){
+			runDraw(sel.value)
+		}
+
+		function showWarning(mode){
+			if(mode == 'show'){
+				cover.style.display = 'block'
+			}
+			else if(mode == 'hide'){
+				cover.style.display = 'none'
+			}
+		}
+
+		img.onload = function() {
+			c.drawImage(img, 0, 0, canvas.width, canvas.height); // 绘制并适应画布大小
+		};
+
+	</script>
+</html>
